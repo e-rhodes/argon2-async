@@ -1,6 +1,5 @@
 use crate::Result;
-use argon2::password_hash::Error;
-use password_hash::PasswordVerifier;
+use argon2::password_hash::{PasswordVerifier, PasswordHash, Error};
 use std::convert::identity;
 
 /// Verify a password with the given hash.
@@ -16,7 +15,7 @@ use std::convert::identity;
 pub async fn verify<'a>(password: String, hash: String) -> Result<bool> {
     let hasher = crate::get_hasher().await?;
     let res = tokio::task::spawn_blocking(move || {
-        password_hash::PasswordHash::try_from(hash.as_ref())
+        PasswordHash::try_from(hash.as_ref())
             .map(|hash| hasher.verify_password(password.as_bytes(), &hash))
             .and_then(identity)
     })

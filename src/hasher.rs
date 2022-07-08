@@ -1,6 +1,5 @@
 use crate::{Config, Error, Result};
-use argon2::{Argon2, Params, PasswordHasher};
-use password_hash::{Salt, SaltString};
+use argon2::{Argon2, Params, PasswordHasher, password_hash::{Salt, SaltString, rand_core::OsRng}};
 
 pub(crate) async fn get_hasher<'a>() -> Result<Argon2<'a>> {
     let config = crate::config::GLOBAL_CONFIG
@@ -37,7 +36,7 @@ pub async fn hash_raw(password: impl AsRef<[u8]>) -> crate::Result<Vec<u8>> {
     let password = password.as_ref().to_owned();
 
     let res = tokio::task::spawn_blocking(move || {
-        let salt_str = SaltString::generate(rand::thread_rng());
+        let salt_str = SaltString::generate(&mut OsRng);
         let salt = salt_str.as_salt();
         let mut output = Vec::new();
         hasher
@@ -60,7 +59,7 @@ pub async fn hash(password: impl AsRef<[u8]>) -> crate::Result<String> {
     let password = password.as_ref().to_owned();
 
     let res = tokio::task::spawn_blocking(move || {
-        let salt_str = SaltString::generate(rand::thread_rng());
+        let salt_str = SaltString::generate(&mut OsRng);
         let salt = Salt::from(&salt_str);
         hasher
             .hash_password(&*password, &salt)

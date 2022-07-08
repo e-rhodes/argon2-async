@@ -1,5 +1,6 @@
 use std::fmt::{Debug, Display, Formatter};
 use tokio::task::JoinError;
+use argon2::password_hash;
 
 #[derive(Debug)]
 #[non_exhaustive]

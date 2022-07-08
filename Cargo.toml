@@ -13,9 +13,7 @@ repository = "https://github.com/tazz4843/argon2-async"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-password-hash = "0.4"
-rand = "0.8"
 num_cpus = "1.13"
 argon2 = { version = "0.4", features = ["parallel", "password-hash"] }
-tokio = { version = "1.17", default-features = false, features = ["sync", "rt"] }
-once_cell = { version = "1.8", default-features = false, features = ["std"] }
+tokio = { version = "1", default-features = false, features = ["sync", "rt"] }
+once_cell = { version = "1", default-features = false, features = ["std"] }
