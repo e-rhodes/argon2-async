@@ -1,5 +1,5 @@
 use crate::Result;
-use argon2::password_hash::{PasswordVerifier, PasswordHash, Error};
+use argon2::password_hash::{Error, PasswordHash, PasswordVerifier};
 use std::convert::identity;
 
 /// Verify a password with the given hash.

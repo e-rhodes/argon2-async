@@ -1,5 +1,8 @@
 use crate::{Config, Error, Result};
-use argon2::{Argon2, Params, PasswordHasher, password_hash::{Salt, SaltString, rand_core::OsRng}};
+use argon2::{
+    password_hash::{rand_core::OsRng, Salt, SaltString},
+    Argon2, Params, PasswordHasher,
+};
 
 pub(crate) async fn get_hasher<'a>() -> Result<Argon2<'a>> {
     let config = crate::config::GLOBAL_CONFIG
